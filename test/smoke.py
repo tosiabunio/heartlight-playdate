@@ -44,7 +44,7 @@ playdate = {
     buttonIsPressed   = function(b) return _isPressed(b) == true end,
     buttonJustPressed = function(b) return _justPressed(b) == true end,
     display = { setRefreshRate = noop },
-    getSystemMenu = function() return { addMenuItem = noop } end,
+    getSystemMenu = function() return { addMenuItem = noop, addCheckmarkMenuItem = noop } end,
     file = { kFileRead = 1, open = function() lineIdx = 0; return fileObj end },
     graphics = {
         kColorBlack = 0, kColorWhite = 1,
@@ -56,7 +56,7 @@ playdate = {
     },
     sound = {
         sample = { new = function() return {} end },
-        sampleplayer = { new = function() return { play = noop } end },
+        sampleplayer = { new = function() return { play = noop, stop = noop } end },
     },
 }
 """)

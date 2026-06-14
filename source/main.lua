@@ -71,13 +71,16 @@ local titleFrame = 0
 local function startGame()
     hl.scene = "playing"
     startCave(1)
+    hl.playMusic("game")
 end
 
--- System menu: bail back to the title screen.
-pd.getSystemMenu():addMenuItem("title screen", function()
+-- System menu: bail back to the title screen, and a music on/off toggle.
+local menu = pd.getSystemMenu()
+menu:addMenuItem("title screen", function()
     hl.scene = "title"
     titleFrame = 0
 end)
+menu:addCheckmarkMenuItem("music", true, function(on) hl.setMusicEnabled(on) end)
 
 function playdate.update()
     if #hl.levels == 0 then
@@ -89,6 +92,7 @@ function playdate.update()
     end
 
     if hl.scene == "title" then
+        hl.playMusic("title")
         titleFrame = titleFrame + 1
         hl.drawTitle(titleFrame)
         if pd.buttonJustPressed(pd.kButtonA) then startGame() end
