@@ -104,10 +104,12 @@ separate development repository.
 
 ## License
 
-This port is a derivative of **Heartlight PC** (1994), which its authors released
-under **Creative Commons Attribution-ShareAlike** in 2006. In keeping with the
-share-alike terms, this project — the Lua code, the converted graphics, and the
-level data — is licensed under **CC BY-SA 4.0**. See [LICENSE](LICENSE).
+- **Port code** — everything under `source/*.lua` and `test/` — is licensed under
+  the **MIT License**. See [LICENSE](LICENSE).
+- **Game data and graphics** — `source/images/` (sprites, logo) and
+  `source/levels/` (the cave definitions) — are converted from **Heartlight PC**
+  (1994), which its authors released under **Creative Commons
+  Attribution-ShareAlike** in 2006. Those assets remain under **CC BY-SA**.
 
 ## Acknowledgments
 

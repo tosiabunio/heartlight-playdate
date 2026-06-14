@@ -1,27 +1,31 @@
-Heartlight for Playdate
-Copyright (c) 2026 miasik.net
+MIT License
 
-This work is a port/derivative of Heartlight PC (1994), which its authors
-released under a Creative Commons Attribution-ShareAlike license in 2006.
-In keeping with the ShareAlike terms, this project — the Lua source code, the
-converted graphics, and the level data — is licensed under the
+Copyright (c) 2026 Maciek Miasik (miasik.net)
 
-    Creative Commons Attribution-ShareAlike 4.0 International License
-    (CC BY-SA 4.0)
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-You are free to share and adapt this material for any purpose, even
-commercially, under the following terms:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-  - Attribution — You must give appropriate credit, provide a link to the
-    license, and indicate if changes were made.
-  - ShareAlike — If you remix, transform, or build upon the material, you must
-    distribute your contributions under the same license as the original.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-The full license text is available at:
-    https://creativecommons.org/licenses/by-sa/4.0/legalcode
+---
 
-A human-readable summary is at:
-    https://creativecommons.org/licenses/by-sa/4.0/
+NOTE ON GAME ASSETS
 
-Attribution: based on "Heartlight PC" (1994), released under CC BY-SA by its
-original authors; Playdate port by miasik.net.
+This license (MIT) covers the port's source code only. The game data and
+graphics under source/images/ and source/levels/ are converted from
+Heartlight PC (1994), which its authors released under a Creative Commons
+Attribution-ShareAlike license; those assets remain under CC BY-SA. See the
+"License" section of README.md.
