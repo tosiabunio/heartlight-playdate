@@ -31,19 +31,16 @@ end
 function hl.drawHud()
     local gfx = playdate.graphics
 
+    -- The A.B. Cop font is uppercase only (no / - : . or lowercase), so all HUD
+    -- text is uppercase and avoids those characters.
     gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-    gfx.drawText(string.format("LEVEL %d/%d", hl.current, #hl.levels), 44, 7)
+    gfx.drawText(string.format("LEVEL %d OF %d", hl.current, #hl.levels), 44, 8)
 
     -- heart icon (drawn in its own colours) + remaining count
     gfx.setImageDrawMode(gfx.kDrawModeCopy)
     local heart = hl.tiles:getImage(hl.shapes[hl.E.HEART] + 1)
-    if heart then heart:draw(316, 4) end
+    if heart then heart:draw(312, 4) end
     gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-    gfx.drawText("x " .. (hl.hearts_num or 0), 334, 7)
-
-    local author = hl.levels[hl.current].author
-    if author then
-        gfx.drawTextAligned(author, 200, 224, kTextAlignment.center)
-    end
+    gfx.drawText(tostring(hl.hearts_num or 0), 332, 8)
     gfx.setImageDrawMode(gfx.kDrawModeCopy)
 end

@@ -49,8 +49,9 @@ playdate = {
     graphics = {
         kColorBlack = 0, kColorWhite = 1,
         kDrawModeCopy = 0, kDrawModeFillWhite = 1,
-        clear = noop, setImageDrawMode = noop,
+        clear = noop, setImageDrawMode = noop, setFont = noop,
         drawText = noop, drawTextAligned = noop,
+        font = { new = function() return {} end },
         getDisplayImage = function() return fakeImg end,
         imagetable = { new = function() return fakeTable end },
         image = { new = function() return fakeImg end },

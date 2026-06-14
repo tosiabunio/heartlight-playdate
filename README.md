@@ -4,12 +4,21 @@ A port of **Heartlight PC** (1994) to the [Playdate](https://play.date). The gam
 is reconstructed in Lua from the original DOS C source, reproducing the original
 mechanics, data, and feel — right down to its deliberate **~8.9 fps** cave pace.
 
-Heartlight is a grid puzzle in the Boulder-style mould: dig through grass, push
-rocks, dodge falling hazards and bombs, collect every heart to open the exit,
-then step through it to clear the cave.
+Heartlight is a grid puzzle of falling rocks and dig-and-collect: dig through
+grass, push rocks, dodge falling hazards and bombs, collect every heart to open
+the exit, then step through it to clear the cave.
 
 ![Title screen](docs/title.png)
 ![Gameplay](docs/cave.png)
+
+## The original game
+
+The original game can be played online at:
+
+* [playDOSgames](https://www.playdosgames.com/online/heartlight-pc/)
+
+The DOSBox version, ready to run on modern Windows, is available for free at
+[GOG.com](https://www.gog.com/en/game/heartlight).
 
 ## Status
 
@@ -17,8 +26,8 @@ Playable end to end across all 70 caves. Implemented:
 
 - **Rendering** — the original 22×14 cave grid (a 1-cell border around the 20×12
   play area), 16×16 1-bit tiles, the 320×192 play area centred on the screen, a
-  HUD (level, hearts remaining, cave author), and a title screen built from the
-  original HEARTLIGHT logo.
+  HUD (cave number, hearts remaining) in a bitmap font, and a title screen built
+  from the original HEARTLIGHT logo.
 - **Simulation** — the full physics, ported from the original `animate()` sweep
   and `*_proc` handlers: gravity (rocks / hearts / bombs fall and roll off each
   other), bombs (arm on impact, chain-explode), balloons (rise and push),
@@ -26,12 +35,16 @@ Playable end to end across all 70 caves. Implemented:
 - **Hero** — walk and dig, push rocks / bombs / balloons (half-speed), teleport
   through tunnels, collect hearts, die by crushing or self-destruct, and exit
   through the opened door.
-- **Flow** — sequential progression; clearing a cave advances, dying retries it.
+- **Flow** — sequential progression; clearing a cave slides to the next, dying
+  retries the current one.
 - **Timing** — locked to the original **~8.88 fps**, derived from the DOS sound
   timer (PIT divisor 140, the ISR adding 2 per tick, `GAME_SPEED` 1920).
+- **Sound** — the original `.SND` effect samples at every event, plus looping
+  **title and in-game music** (the in-game track is the original `gsong` note
+  chain pre-rendered to one sample). Music can be toggled from the system menu.
 
-Not yet done: **sound** (the effect calls are stubbed), and some front-end
-polish (cave-transition effects).
+By design this port leaves out the original's player profiles, high-score table,
+and the small windowed display mode.
 
 ## Controls
 
@@ -42,6 +55,7 @@ polish (cave-transition effects).
 | Ⓑ | Restart the current cave (self-destruct) |
 | Ⓐ + ◄ / ► | Skip to the previous / next cave (dev) |
 | System menu → *title screen* | Return to the title |
+| System menu → *music* | Toggle music on / off |
 
 Collect every heart to open the exit door, then walk into it to clear the cave.
 
@@ -82,15 +96,17 @@ python test/smoke.py
 
 ```
 source/
-  main.lua       game loop, title/playing state machine, input
+  main.lua       game loop, title/playing/transition state machine, input
   elements.lua   element / state / mode enums, sprite mapping, char map
   grid.lua       the 22x14 cave grid (cave / state / phase / call arrays)
   cave.lua       LEVELS.HL parser + level loader (get_cave)
   sim.lua        physics: animate() + per-element handlers, the hero
   render.lua     draw the cave grid + HUD
-  title.lua      title screen
-  sound.lua      sound stub (effects not yet wired)
+  title.lua      title screen (logo + prompt)
+  sound.lua      sound effects + music
   images/        HL-table-16-16.png (sprite image table) + logo.png
+  fonts/         the bitmap font used for all text
+  sounds/        effect samples + title / game music (WAV)
   levels/        LEVELS.HL — 70 caves, plain text
   pdxinfo        bundle metadata
 test/
@@ -98,18 +114,22 @@ test/
 ```
 
 The 1-bit sprite image table and the title logo were converted from the original
-game's `.GGS` sprite data; `LEVELS.HL` is the original plain-text cave
-definitions. The asset-conversion tooling and the original C source live in a
-separate development repository.
+game's `.GGS` sprite data, and the effect/music samples from its `.SND` data;
+`LEVELS.HL` is the original plain-text cave definitions. The asset-conversion
+tooling and the original C source live in a separate development repository.
 
 ## License
 
 - **Port code** — everything under `source/*.lua` and `test/` — is licensed under
   the **MIT License**. See [LICENSE](LICENSE).
-- **Game data and graphics** — `source/images/` (sprites, logo) and
-  `source/levels/` (the cave definitions) — are converted from **Heartlight PC**
-  (1994), which its authors released under **Creative Commons
-  Attribution-ShareAlike** in 2006. Those assets remain under **CC BY-SA**.
+- **Game data, graphics, and sound** — `source/images/` (sprites, logo),
+  `source/levels/` (the cave definitions), and `source/sounds/` (effects and
+  music) — are converted from **Heartlight PC** (1994), which its authors
+  released under **Creative Commons Attribution-ShareAlike** in 2006. Those
+  assets remain under **CC BY-SA**.
+- **Font** — `source/fonts/` is from idleberg's
+  [playdate-arcade-fonts](https://github.com/idleberg/playdate-arcade-fonts),
+  released into the public domain (**CC0 1.0**).
 
 ## Acknowledgments
 
@@ -117,4 +137,7 @@ separate development repository.
   releasing it under CC BY-SA.
 - The original DOS C source, used as the reference implementation for the
   mechanics, timing, and data formats.
+- The display font is from
+  [playdate-arcade-fonts](https://idleberg.github.io/playdate-arcade-fonts/) by
+  idleberg (CC0), hand-drawn after Toshi Omagari's *Arcade Game Typography*.
 - Playdate port by miasik.net.

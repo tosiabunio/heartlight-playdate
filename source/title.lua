@@ -15,13 +15,14 @@ function hl.drawTitle(frame)
         hl.logo:draw((400 - w) // 2, 22)
     end
 
+    -- The A.B. Cop font is uppercase only; keep text within its glyph set.
     gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-    gfx.drawTextAligned("a puzzle game - 1994", 200, 152, kTextAlignment.center)
-    gfx.drawTextAligned(string.format("%d caves", #hl.levels), 200, 168, kTextAlignment.center)
+    gfx.drawTextAligned("A PUZZLE GAME 1994", 200, 152, kTextAlignment.center)
+    gfx.drawTextAligned(string.format("%d CAVES", #hl.levels), 200, 168, kTextAlignment.center)
 
     -- blinking prompt (~1.4 s period at 8.88 fps)
     if (frame // 6) % 2 == 0 then
-        gfx.drawTextAligned("Press A to start", 200, 198, kTextAlignment.center)
+        gfx.drawTextAligned("PRESS A TO START", 200, 198, kTextAlignment.center)
     end
     gfx.setImageDrawMode(gfx.kDrawModeCopy)
 end

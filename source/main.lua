@@ -18,6 +18,12 @@ local pd <const> = playdate
 
 hl.tiles = assert(gfx.imagetable.new("images/HL"),
     "failed to load images/HL-table-16-16.png")
+
+-- Use the A.B. Cop bitmap font for all text/numbers (uppercase + digits + a few
+-- symbols only). Set as the default so every drawText picks it up.
+local font = gfx.font.new("fonts/A.B. Cop")
+if font then gfx.setFont(font) end
+
 hl.levels = hl.parseLevels("levels/LEVELS.HL")
 hl.current = 1
 -- The original locks simulation + display at one constant rate (HL_PLAY.C
@@ -102,7 +108,7 @@ function playdate.update()
     if #hl.levels == 0 then
         gfx.clear(gfx.kColorBlack)
         gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-        gfx.drawTextAligned("No levels in levels/LEVELS.HL", 200, 110, kTextAlignment.center)
+        gfx.drawTextAligned("NO LEVELS FOUND", 200, 110, kTextAlignment.center)
         gfx.setImageDrawMode(gfx.kDrawModeCopy)
         return
     end
