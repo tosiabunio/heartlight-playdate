@@ -1,0 +1,6 @@
+name=Heartlight
+author=miasik.net
+description=Heartlight (1994) - Playdate port
+bundleID=net.miasik.heartlight
+version=0.1
+buildNumber=1

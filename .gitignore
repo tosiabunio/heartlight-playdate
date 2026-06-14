@@ -1,0 +1,12 @@
+# Playdate build output
+Heartlight.pdx/
+*.pdx
+*.pdz
+
+# Python (test harness)
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+Thumbs.db
