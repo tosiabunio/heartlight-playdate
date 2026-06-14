@@ -54,6 +54,10 @@ playdate = {
         imagetable = { new = function() return fakeTable end },
         image = { new = function() return fakeImg end },
     },
+    sound = {
+        sample = { new = function() return {} end },
+        sampleplayer = { new = function() return { play = noop } end },
+    },
 }
 """)
 
