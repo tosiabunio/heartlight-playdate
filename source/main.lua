@@ -41,6 +41,22 @@ local function startCave(i)
     hl.drawHud()
 end
 
+-- Cave-to-cave slide (HL_PLAY.C next_cave/previous_cave scroll the screen to
+-- reveal the new cave). Snapshot the old screen, load + draw the new one, then
+-- slide both across. The slide runs at 30 fps (gameplay's ~8.9 fps is too coarse
+-- for smooth motion). dir +1 = forward (new enters from the right), -1 = back.
+local TRANS_FRAMES <const> = 16
+local trans = nil   -- { old, new, dir, frame }
+
+local function beginTransition(newIndex, dir)
+    local old = gfx.getDisplayImage()
+    startCave(newIndex)                 -- loads the new cave + draws it to screen
+    local new = gfx.getDisplayImage()
+    trans = { old = old, new = new, dir = dir, frame = 0 }
+    hl.scene = "transition"
+    playdate.display.setRefreshRate(30)
+end
+
 -- One-shot actions, polled every frame so a quick press isn't lost between the
 -- slower sim ticks (HL_PLAY.C animate: Space+L/R navigates, Esc = suicide).
 local function pollOneShots()
@@ -99,6 +115,24 @@ function playdate.update()
         return
     end
 
+    if hl.scene == "transition" then
+        trans.frame = trans.frame + 1
+        local off = (trans.frame * 400) // TRANS_FRAMES
+        if trans.dir > 0 then
+            trans.old:draw(-off, 0)
+            trans.new:draw(400 - off, 0)
+        else
+            trans.old:draw(off, 0)
+            trans.new:draw(off - 400, 0)
+        end
+        if trans.frame >= TRANS_FRAMES then
+            trans = nil
+            hl.scene = "playing"
+            playdate.display.setRefreshRate(hl.FPS)
+        end
+        return
+    end
+
     -- Playing.
     pollOneShots()
     hl.hero_dir = heroDir()
@@ -110,10 +144,10 @@ function playdate.update()
     -- retreats, and a cleared board (hero dead, nothing else active) or a
     -- timed-out post_mortal reloads the current cave.
     if hl.mode == hl.MODE.CAVE_DONE then
-        startCave(hl.current + 1)
+        beginTransition(hl.current + 1, 1)
     elseif hl.mode == hl.MODE.CAVE_BACK then
-        startCave(hl.current - 1)
+        beginTransition(hl.current - 1, -1)
     elseif hl.actives == 0 or hl.post_mortal == 0 then
-        startCave(hl.current)
+        startCave(hl.current)            -- death: instant reload (no slide)
     end
 end

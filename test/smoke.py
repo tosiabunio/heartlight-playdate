@@ -51,6 +51,7 @@ playdate = {
         kDrawModeCopy = 0, kDrawModeFillWhite = 1,
         clear = noop, setImageDrawMode = noop,
         drawText = noop, drawTextAligned = noop,
+        getDisplayImage = function() return fakeImg end,
         imagetable = { new = function() return fakeTable end },
         image = { new = function() return fakeImg end },
     },
@@ -99,6 +100,12 @@ frame("press-A", press=("A",))
 assert hl.scene == "playing", "A did not start the game (scene=%s)" % hl.scene
 for i in range(40):
     frame("walk %d" % i, hold=("Right",))
+
+# cave skip (A+Right -> CAVE_DONE) must trigger and complete a slide transition
+frame("skip", hold=("A",), press=("Right",))
+for i in range(20):
+    frame("transition %d" % i)
+assert hl.scene == "playing", "transition did not finish (scene=%s)" % hl.scene
 
 print("OK: scene=%s cave=%d/%d hearts=%d mode=%s"
       % (hl.scene, hl.current, int(lua.eval("#hl.levels")), hl.hearts_num, hl.mode))
