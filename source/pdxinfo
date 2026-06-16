@@ -1,6 +1,7 @@
 name=Heartlight
 author=miasik.net
-description=Heartlight PC (1994) for Playdate
+description=One elf. Seventy rooms. A million ways to get squashed.
 bundleID=net.miasik.heartlight
-version=1.0.9
-buildNumber=9
+imagePath=images
+version=1.0.12
+buildNumber=12
