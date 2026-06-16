@@ -2,5 +2,5 @@ name=Heartlight
 author=miasik.net
 description=Heartlight PC (1994) for Playdate
 bundleID=net.miasik.heartlight
-version=0.9.6
-buildNumber=6
+version=1.0.9
+buildNumber=9

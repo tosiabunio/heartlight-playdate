@@ -11,6 +11,14 @@ the exit, then step through it to clear the cave.
 ![Title screen](docs/title.png)
 ![Gameplay](docs/cave.png)
 
+## Download
+
+A ready-to-play build is available on itch.io:
+
+* **[Heartlight PC for Playdate](https://tosiabunio.itch.io/heartlight-pc-for-playdate)**
+
+(Or [build it yourself](#building).)
+
 ## About Heartlight PC
 
 Originally created by Polish developer Janusz Pelc for 8-bit Atari computers in
