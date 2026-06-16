@@ -11,6 +11,23 @@ the exit, then step through it to clear the cave.
 ![Title screen](docs/title.png)
 ![Gameplay](docs/cave.png)
 
+## About Heartlight PC
+
+Originally created by Polish developer Janusz Pelc for 8-bit Atari computers in
+1990, the game was ported to MS-DOS in 1994 by xLand Games and published
+worldwide by Epic MegaGames (now Epic Games) as part of the Epic Puzzle Pack.
+
+Heartlight PC is a grid-based puzzle game heavily inspired by classics like
+Boulder Dash and Supaplex. The player controls an elf named Percival (or
+"Mosiek" in the original Polish release) who must navigate through up to 70 rooms
+to collect every heart on the screen, which unlocks the exit door. The challenge
+comes from manipulating the environment and gravity. The grid is filled with
+destructible grass, solid walls, falling boulders, and volatile bombs. Because
+gravity pulls loose objects downward as soon as the space beneath them is
+cleared, players must use precise timing and logic to clear paths without
+dropping a boulder on Percival's head, trapping a necessary heart, or blowing up
+the wrong section of the map.
+
 ## The original game
 
 The original game can be played online at:
@@ -140,4 +157,6 @@ tooling and the original C source live in a separate development repository.
 - The display font is from
   [playdate-arcade-fonts](https://idleberg.github.io/playdate-arcade-fonts/) by
   idleberg (CC0), hand-drawn after Toshi Omagari's *Arcade Game Typography*.
-- Playdate port by miasik.net.
+- Graphics converted by [Jakub Adamczyk](https://github.com/thesigns).
+- Playdate port by [Claude Code](https://claude.com/claude-code) under the
+  supervision of Maciej Miąsik (miasik.net).

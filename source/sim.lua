@@ -19,6 +19,7 @@ function hl.playInit()
     hl.post_mortal = hl.POST_MORTAL_TIME
     hl.hero_dir = 0
     hl.mode = hl.MODE.GAME_OK
+    hl.won = false            -- set true only when the hero enters the exit door
 end
 
 -- fallers_proc (HL_PLAY.C 323): shared gravity for rock/heart/bomb. Returns true
@@ -377,6 +378,7 @@ function hl.heroProc(pos)
                 hl.sfx("door")
                 moveHero()
                 hl.dance = 16
+                hl.won = true   -- genuine clear (vs. a dev skip) -> save progress
             else
                 heroStop()
             end

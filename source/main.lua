@@ -12,6 +12,7 @@ import "sound"
 import "sim"
 import "render"
 import "title"
+import "save"
 
 local gfx <const> = playdate.graphics
 local pd <const> = playdate
@@ -26,6 +27,7 @@ if font then gfx.setFont(font) end
 
 hl.levels = hl.parseLevels("levels/LEVELS.HL")
 hl.current = 1
+hl.loadProgress()           -- restore which levels were previously completed
 -- The original locks simulation + display at one constant rate (HL_PLAY.C
 -- heartlight loop: animate(); display_cave(); wait until get_timer() >=
 -- GAME_SPEED). The sound library (HL/SOUNDS) drives that timer: it programs PIT
@@ -54,13 +56,42 @@ end
 local TRANS_FRAMES <const> = 16
 local trans = nil   -- { old, new, dir, frame }
 
+-- Draw the current slide position. frame 0 = old fully on screen (off 0);
+-- frame TRANS_FRAMES = new fully on screen (off 400). The two snapshots always
+-- tile the full 400px width together, so no clear is needed.
+local function drawTransition()
+    local off = (trans.frame * 400) // TRANS_FRAMES
+    if trans.dir > 0 then           -- forward: old slides out left, new in from right
+        trans.old:draw(-off, 0)
+        trans.new:draw(400 - off, 0)
+    else                            -- back: old slides out right, new in from left
+        trans.old:draw(off, 0)
+        trans.new:draw(off - 400, 0)
+    end
+end
+
+-- Render the CURRENT cave (whatever is in the grid right now) into its own
+-- offscreen image. We can't use gfx.getDisplayImage() here: mid-update() it
+-- returns the already-displayed front buffer, so it would not reflect the cave
+-- we just drew -- old and new would both capture the old scene.
+local function snapshotScene()
+    local img = gfx.image.new(400, 240)
+    gfx.pushContext(img)
+    hl.drawCave()
+    hl.drawHud()
+    gfx.popContext()
+    return img
+end
+
 local function beginTransition(newIndex, dir)
-    local old = gfx.getDisplayImage()
-    startCave(newIndex)                 -- loads the new cave + draws it to screen
-    local new = gfx.getDisplayImage()
+    local old = snapshotScene()         -- grid still holds the OLD cave here
+    startCave(newIndex)                 -- load the new cave into the grid
+    local new = snapshotScene()         -- now the grid holds the NEW cave
     trans = { old = old, new = new, dir = dir, frame = 0 }
     hl.scene = "transition"
     playdate.display.setRefreshRate(30)
+    -- Draw frame 0 (old fully visible) so the slide starts from the old cave.
+    drawTransition()
 end
 
 -- One-shot actions, polled every frame so a quick press isn't lost between the
@@ -103,6 +134,7 @@ menu:addMenuItem("title screen", function()
     titleFrame = 0
 end)
 menu:addCheckmarkMenuItem("music", true, function(on) hl.setMusicEnabled(on) end)
+menu:addMenuItem("reset progress", function() hl.resetProgress() end)
 
 function playdate.update()
     if #hl.levels == 0 then
@@ -123,14 +155,7 @@ function playdate.update()
 
     if hl.scene == "transition" then
         trans.frame = trans.frame + 1
-        local off = (trans.frame * 400) // TRANS_FRAMES
-        if trans.dir > 0 then
-            trans.old:draw(-off, 0)
-            trans.new:draw(400 - off, 0)
-        else
-            trans.old:draw(off, 0)
-            trans.new:draw(off - 400, 0)
-        end
+        drawTransition()                 -- frame TRANS_FRAMES => new fully on screen
         if trans.frame >= TRANS_FRAMES then
             trans = nil
             hl.scene = "playing"
@@ -150,6 +175,7 @@ function playdate.update()
     -- retreats, and a cleared board (hero dead, nothing else active) or a
     -- timed-out post_mortal reloads the current cave.
     if hl.mode == hl.MODE.CAVE_DONE then
+        if hl.won then hl.markCompleted(hl.current) end   -- real clear, not a skip
         beginTransition(hl.current + 1, 1)
     elseif hl.mode == hl.MODE.CAVE_BACK then
         beginTransition(hl.current - 1, -1)

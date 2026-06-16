@@ -26,8 +26,9 @@ function hl.drawCave()
     end
 end
 
--- HUD: level number (top-left) and a heart icon + remaining count (top-right) in
--- the black top margin; author credit centered in the bottom margin.
+-- HUD: level number (top-left) and a heart icon + collected/required count
+-- (top-right) in the black top margin; a "COMPLETED" badge centered in the
+-- bottom margin when the current level has already been beaten.
 function hl.drawHud()
     local gfx = playdate.graphics
 
@@ -36,11 +37,24 @@ function hl.drawHud()
     gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
     gfx.drawText(string.format("LEVEL %d OF %d", hl.current, #hl.levels), 44, 8)
 
-    -- heart icon (drawn in its own colours) + remaining count
+    -- collected of required hearts, right-aligned to the level's right edge (not
+    -- the screen edge), with the heart icon to its left. hearts_num counts down
+    -- from start_hearts_num as hearts are taken.
+    local rightEdge = hl.OX + hl.INNER_W * hl.TILE   -- 360 = right edge of play area
+    local required = hl.start_hearts_num or 0
+    local collected = required - (hl.hearts_num or 0)
+    local txt = string.format("%d OF %d", collected, required)
+    local w = gfx.getTextSize(txt)
+    gfx.drawTextAligned(txt, rightEdge, 8, kTextAlignment.right)
+
     gfx.setImageDrawMode(gfx.kDrawModeCopy)
     local heart = hl.tiles:getImage(hl.shapes[hl.E.HEART] + 1)
-    if heart then heart:draw(312, 4) end
-    gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-    gfx.drawText(tostring(hl.hearts_num or 0), 332, 8)
+    if heart then heart:draw(rightEdge - w - 18, 4) end
+
+    -- completion status: shown when re-entering an already-cleared level.
+    if hl.isCompleted and hl.isCompleted(hl.current) then
+        gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+        gfx.drawTextAligned("COMPLETED", 200, 220, kTextAlignment.center)
+    end
     gfx.setImageDrawMode(gfx.kDrawModeCopy)
 end
