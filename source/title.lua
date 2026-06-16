@@ -17,7 +17,7 @@ function hl.drawTitle(frame)
 
     -- The A.B. Cop font is uppercase only; keep text within its glyph set.
     gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-    gfx.drawTextAligned("A PUZZLE GAME 1994", 200, 152, kTextAlignment.center)
+    gfx.drawTextAligned("A PUZZLE GAME BY JANUSZ PELC", 200, 152, kTextAlignment.center)
     gfx.drawTextAligned(string.format("%d CAVES", #hl.levels), 200, 168, kTextAlignment.center)
 
     -- blinking prompt (~1.4 s period at 8.88 fps)
