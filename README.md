@@ -43,8 +43,8 @@ Playable end to end across all 70 caves. Implemented:
 
 - **Rendering** — the original 22×14 cave grid (a 1-cell border around the 20×12
   play area), 16×16 1-bit tiles, the 320×192 play area centred on the screen, a
-  HUD (cave number, hearts remaining) in a bitmap font, and a title screen built
-  from the original HEARTLIGHT logo.
+  HUD (cave number, hearts collected of required) in a bitmap font, and a title
+  screen built from the original HEARTLIGHT logo.
 - **Simulation** — the full physics, ported from the original `animate()` sweep
   and `*_proc` handlers: gravity (rocks / hearts / bombs fall and roll off each
   other), bombs (arm on impact, chain-explode), balloons (rise and push),
@@ -54,6 +54,9 @@ Playable end to end across all 70 caves. Implemented:
   through the opened door.
 - **Flow** — sequential progression; clearing a cave slides to the next, dying
   retries the current one.
+- **Progress** — cleared caves are saved to the datastore and marked with a
+  *COMPLETED* badge when revisited; *reset progress* clears the record from the
+  system menu.
 - **Timing** — locked to the original **~8.88 fps**, derived from the DOS sound
   timer (PIT divisor 140, the ISR adding 2 per tick, `GAME_SPEED` 1920).
 - **Sound** — the original `.SND` effect samples at every event, plus looping
@@ -70,9 +73,10 @@ and the small windowed display mode.
 | Ⓐ | Start (on the title screen) |
 | D-pad | Move the hero — walk, dig grass, push, collect |
 | Ⓑ | Restart the current cave (self-destruct) |
-| Ⓐ + ◄ / ► | Skip to the previous / next cave (dev) |
+| Ⓐ + ◄ / ► | Skip to the previous / next cave |
 | System menu → *title screen* | Return to the title |
 | System menu → *music* | Toggle music on / off |
+| System menu → *reset progress* | Clear all saved cave-completion records |
 
 Collect every heart to open the exit door, then walk into it to clear the cave.
 
@@ -121,6 +125,7 @@ source/
   render.lua     draw the cave grid + HUD
   title.lua      title screen (logo + prompt)
   sound.lua      sound effects + music
+  save.lua       progress persistence — completed levels (datastore)
   images/        HL-table-16-16.png (sprite image table) + logo.png
   fonts/         the bitmap font used for all text
   sounds/        effect samples + title / game music (WAV)
@@ -154,9 +159,8 @@ tooling and the original C source live in a separate development repository.
   releasing it under CC BY-SA.
 - The original DOS C source, used as the reference implementation for the
   mechanics, timing, and data formats.
-- The display font is from
-  [playdate-arcade-fonts](https://idleberg.github.io/playdate-arcade-fonts/) by
-  idleberg (CC0), hand-drawn after Toshi Omagari's *Arcade Game Typography*.
+- The display font is from [playdate-arcade-fonts](https://idleberg.github.io/playdate-arcade-fonts/) by idleberg (CC0), 
+  hand-drawn after Toshi Omagari's *Arcade Game Typography*.
 - Graphics converted by [Jakub Adamczyk](https://github.com/thesigns).
 - Playdate port by [Claude Code](https://claude.com/claude-code) under the
-  supervision of Maciej Miąsik (miasik.net).
+  supervision of [Maciej Miąsik](https://github.com/tosiabunio) ([miasik.net](https://miasik.net/)).
