@@ -13,9 +13,10 @@ the exit, then step through it to clear the cave.
 
 ## Download
 
-A ready-to-play build is available on itch.io:
+The finished game is **available to download on itch.io** — grab the `.pdx`
+and sideload it to your Playdate:
 
-* **[Heartlight PC for Playdate](https://tosiabunio.itch.io/heartlight-pc-for-playdate)**
+* **[Heartlight PC for Playdate on itch.io](https://tosiabunio.itch.io/heartlight-pc-for-playdate)**
 
 (Or [build it yourself](#building).)
 
