@@ -2,7 +2,8 @@
 -- Title screen -> playable hero. D-pad moves the hero (walk/push/collect/tunnel);
 -- collect every heart to open the exit, step through it to win -> next cave.
 -- Controls: A = start (on title); D-pad = move; B = restart cave (suicide);
--- A + Left/Right = skip cave (dev). Win advances, death reloads (sequential).
+-- A + Left/Right = skip cave (dev); crank = skip cave (forward/back). Win
+-- advances, death reloads (sequential).
 
 import "CoreLibs/graphics"
 import "elements"
@@ -106,6 +107,25 @@ local function pollOneShots()
     end
 end
 
+-- Crank-driven cave navigation: a smooth analog of the A+Left/Right dev skip.
+-- Accumulate crank travel and step one cave per CRANK_PER_CAVE degrees, routing
+-- through the same CAVE_DONE/CAVE_BACK transition as the buttons. Forward
+-- (clockwise) advances; back (counter-clockwise) retreats.
+local CRANK_PER_CAVE <const> = 120   -- degrees of crank travel per cave change
+local crankAccum = 0
+
+local function pollCrank()
+    if pd.isCrankDocked() then crankAccum = 0; return end
+    crankAccum = crankAccum + pd.getCrankChange()
+    if crankAccum >= CRANK_PER_CAVE then
+        crankAccum = crankAccum - CRANK_PER_CAVE
+        hl.mode = hl.MODE.CAVE_DONE
+    elseif crankAccum <= -CRANK_PER_CAVE then
+        crankAccum = crankAccum + CRANK_PER_CAVE
+        hl.mode = hl.MODE.CAVE_BACK
+    end
+end
+
 -- Held D-pad -> hero_dir (last pressed wins, matching the C ordering). A acts as
 -- a modifier for cave-skip, so it suppresses movement.
 local function heroDir()
@@ -166,6 +186,7 @@ function playdate.update()
 
     -- Playing.
     pollOneShots()
+    pollCrank()
     hl.hero_dir = heroDir()
     hl.animate()
     hl.drawCave()

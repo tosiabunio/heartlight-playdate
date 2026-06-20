@@ -83,6 +83,7 @@ and the small windowed display mode.
 | D-pad | Move the hero — walk, dig grass, push, collect |
 | Ⓑ | Restart the current cave (self-destruct) |
 | Ⓐ + ◄ / ► | Skip to the previous / next cave |
+| Crank ↻ / ↺ | Skip to the next / previous cave |
 | System menu → *title screen* | Return to the title |
 | System menu → *music* | Toggle music on / off |
 | System menu → *reset progress* | Clear all saved cave-completion records |
